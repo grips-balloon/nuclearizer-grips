@@ -64,6 +64,7 @@ using namespace std;
 #include "MModuleLoaderSimulationsCosima.h"
 #include "MModuleLoaderMeasurementsROA.h"
 #include "MModuleLoaderMeasurementsHDF.h"
+#include "MModuleLoaderMeasurementsHDFGRIPS.h"
 #include "MModuleLoaderMeasurementsFITS.h"
 #include "MModuleEnergyCalibration.h"
 #include "MModuleDepthCalibration.h"
@@ -127,6 +128,7 @@ MAssembly::MAssembly()
   m_Supervisor->AddAvailableModule(new MModuleLoaderSimulationsCosima());
   m_Supervisor->AddAvailableModule(new MModuleLoaderMeasurementsROA());
   m_Supervisor->AddAvailableModule(new MModuleLoaderMeasurementsHDF());
+  m_Supervisor->AddAvailableModule(new MModuleLoaderMeasurementsHDFGRIPS());
   m_Supervisor->AddAvailableModule(new MModuleLoaderMeasurementsFITS());
 
   m_Supervisor->AddAvailableModule(new MModuleDEESMEX());
@@ -154,7 +156,7 @@ MAssembly::MAssembly()
   
   m_Supervisor->SetUIProgramName("Nuclearizer");
   m_Supervisor->SetUIPicturePath("$(NUCLEARIZER)/resource/icons/Nuclearizer.xpm");
-  m_Supervisor->SetUISubTitle("The detector calibrator of the COmpton Spectrometer and Imager, COSI");
+  m_Supervisor->SetUISubTitle("The detector calibrator for GRIPS");
   m_Supervisor->SetUILeadAuthor("Andreas Zoglauer");
   m_Supervisor->SetUICoAuthors("Robin Anthony-Petersen, Mark Bandstra, Jackie Beechert, \nEric Bellm, Emily Broadbent, Alan Chiu, \nValentina Fioretti, Julian Gerber, Felix Hagemann, \nSophie Haight, Ares Hernandez, Carolyn Kierans, \nHadar Lazar, Jau-Shian Liang, Alex Lowell, \nParshad Patel, Daniel Perez-Becker, Sean Pike \nJarred Roberts, Nicole Rodriguez Cavero, \nField Rogers, Clio Sleator");
 }
