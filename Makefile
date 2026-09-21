@@ -70,7 +70,8 @@ CXXFLAGS += -I$(IN) -I$(MEGALIB)/include -I/opt/local/include $(H5CXXFLAGS) $(CC
 # Comment this line out if you want to accept warnings
 #CXXFLAGS += -Werror -Wno-unused-variable
 
-LIBS += $(H5LIBS) $(CCFITSLIBS) $(NUCLEARIZERLIBS)
+# LIBS += $(H5LIBS) $(CCFITSLIBS) $(NUCLEARIZERLIBS)
+LIBS += $(H5LIBS) $(CCFITSLIBS)
 
 # Fretalon core:
 FRETALON_DIR          := $(MEGALIB)/src/fretalon/framework

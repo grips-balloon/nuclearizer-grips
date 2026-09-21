@@ -297,7 +297,7 @@ class MModuleLoaderMeasurementsHDF : public MModuleLoaderMeasurements
   MString m_FileNameStripMap;
 
   //! The map which ASICs are HV/LV for HDFv2
-  vector<map<unsigned int, vector<bool>>> m_ASICPolarities;
+  vector<map<bool, vector<bool>>> m_ASICPolarities;
 
   //! The detector IDs which were enabled during the run, read from the config JSON
   //! Empty if the config JSON does not contain the enabled flags

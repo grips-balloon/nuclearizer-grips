@@ -808,6 +808,12 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
     unsigned long LongEventID = EventID + m_NumberOfEventIDRollOvers*(numeric_limits<uint16_t>::max() + 1);
 
     Event->SetID(LongEventID);
+    //TODO GRIPS AWL: time stuff below changed upstream in MReadoutAssembly
+    //Note that there are two MTime members that could be used instead of CL and TI, UTC time and RTS time
+    //
+    //
+    //
+    /*
     if (m_HDFStripHitVersion == MHDFStripHitVersion::V1_0) {
       Event->SetCL(TimeCode);
     } else if (m_HDFStripHitVersion >= MHDFStripHitVersion::V2_0)  {
@@ -818,6 +824,7 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
     } else {
       Event->SetTI(TimeCode);
     }
+    */ 
     NStripHits = static_cast<unsigned int>(NumberOfHits);
     StripHitIndex++;
   }
