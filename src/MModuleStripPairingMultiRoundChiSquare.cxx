@@ -74,7 +74,7 @@ MModuleStripPairingMultiRoundChiSquare::MModuleStripPairingMultiRoundChiSquare()
   // Set all modules, which have to be done before this module
   AddPreceedingModuleType(MAssembly::c_EventLoader);
   AddPreceedingModuleType(MAssembly::c_EnergyCalibration);
-  AddPreceedingModuleType(MAssembly::c_TACcut);
+  AddPreceedingModuleType(MAssembly::c_TACCalibration);
 
   // Set all types this modules handles
   AddModuleType(MAssembly::c_StripPairing);
@@ -604,7 +604,7 @@ bool MModuleStripPairingMultiRoundChiSquare::CreateHits(unsigned int d, MReadOut
         Hit->SetEnergyResolution(EnergyResolution);
         Hit->SetLVEnergy(LVEnergy);
         Hit->SetHVEnergy(HVEnergy);
-        Hit->SetStripHitMultipleTimesX(MultipleHitsOnLV);
+        Hit->SetStripHitMultipleTimesLV(MultipleHitsOnLV);
         Event->AddHit(Hit);
           
 
@@ -651,7 +651,7 @@ bool MModuleStripPairingMultiRoundChiSquare::CreateHits(unsigned int d, MReadOut
         Hit->SetEnergyResolution(EnergyResolution);
         Hit->SetLVEnergy(LVEnergy);
         Hit->SetHVEnergy(HVEnergy);
-        Hit->SetStripHitMultipleTimesY(MultipleHitsOnHV);
+        Hit->SetStripHitMultipleTimesHV(MultipleHitsOnHV);
         Event->AddHit(Hit);
 
         HVEnergyTotal += HVEnergy;
