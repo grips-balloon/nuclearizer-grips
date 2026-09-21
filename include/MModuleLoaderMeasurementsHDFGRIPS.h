@@ -25,7 +25,7 @@
 #include "MFileReadOuts.h"
 
 // Nuclearizer libs:
-#include "MStripMap.h"
+#include "MStripMapGRIPS.h"
 #include "MModuleLoaderMeasurements.h"
 #include "MModuleLoaderMeasurementsHDF.h"
 
@@ -305,7 +305,7 @@ class MModuleLoaderMeasurementsHDFGRIPS : public MModuleLoaderMeasurements
   vector<map<unsigned int, vector<bool>>> m_ASICPolarities;
 
   //! The strip map
-  MStripMap m_StripMap;
+  MStripMapGRIPS m_StripMap;
   
   //! Variable that deteremines if the user wants to include Nearest Neighbors
   bool m_IncludeNearestNeighbor;
