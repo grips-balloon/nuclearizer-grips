@@ -27,7 +27,8 @@
 // Nuclearizer libs:
 #include "MStripMapGRIPS.h"
 #include "MModuleLoaderMeasurements.h"
-#include "MModuleLoaderMeasurementsHDF.h"
+#include "MModuleLoaderMeasurementsHDF.h" //still need this one because it defines some helper types e.g. MHDFStripHit_V1_2
+#include "MModuleLoaderMeasurementsHDFGRIPS.h"
 
 // H5 libs
 #include "H5Cpp.h"

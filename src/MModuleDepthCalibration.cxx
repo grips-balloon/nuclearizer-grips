@@ -247,12 +247,17 @@ bool MModuleDepthCalibration::AnalyzeEvent(MReadOutAssembly* Event)
         int DetID = LVSH->GetDetectorID();
         int LVStripID = LVSH->GetStripID();
         int HVStripID = HVSH->GetStripID();
+	/* AWL: adjusted for GRIPS
         int PixelCode = 10000*DetID + 100*LVStripID + HVStripID;
+	*/
+        int PixelCode = 23000*DetID + 149*LVStripID + HVStripID;
+
+
 
         //Define the X/Y positions based on the detector pitch and number of strip hits
         // LV strip 0 is in -ve X direction, HV strip 0 is in -ve Y direction.
         // Confusingly, the strips parallel to the Y axis determines the X position, and the "X strips" determine the Y position
-        double Xpos = m_YPitches[DetID]*((double)LVStripID - ((m_NYStrips[DetID]-1)/2.0));
+        double Xpos = m_YPitches[DetID]*((double)LVStripID - ((m_NYStrips[DetID]-1)/2.0)); //TODOAWL x/y positions are based on dominant strip energy
         double Ypos = m_XPitches[DetID]*((double)HVStripID - ((m_NXStrips[DetID]-1)/2.0));
         double Zpos = 0.0;
 
@@ -267,7 +272,7 @@ bool MModuleDepthCalibration::AnalyzeEvent(MReadOutAssembly* Event)
 
         // Account for shorted strips
         // Shorted strip on the LV side => adjust Xpos and Xsigma
-        if (m_ShortedStrips.find(R_LV) != m_ShortedStrips.end()){
+        if (m_ShortedStrips.find(R_LV) != m_ShortedStrips.end()){  //TODOAWL figure out how shorted strips are specified?
           unsigned int LeftLVStripID, RightLVStripID;
           tie(LeftLVStripID, RightLVStripID) = m_ShortedStrips[R_LV];
           // Assign Xpos as the mean of the lowest and highest LV StripID
@@ -318,11 +323,17 @@ bool MModuleDepthCalibration::AnalyzeEvent(MReadOutAssembly* Event)
         } else if (CTDVec.size() == 0) {
           if (g_Verbosity >= c_Error) cout << m_XmlTag << "Empty CTD vector" << endl;
           H->SetNoDepth();
+	  /*
           Event->SetDepthCalibrationError("No calibration coefficients");
+	  */
+          Event->SetDepthCalibrationError("Empty CTD vector");
         } else if (DepthVec.size() == 0) {
           if (g_Verbosity >= c_Error) cout << m_XmlTag << "Empty Depth vector" << endl;
           H->SetNoDepth();
+	  /*
           Event->SetDepthCalibrationError("No calibration coefficients");
+	  */
+          Event->SetDepthCalibrationError("Empty Depth vector");
         } else if ((LVTiming < 1.0E-6) || (HVTiming < 1.0E-6)) {
           ++m_Error3;
           H->SetNoDepth();
