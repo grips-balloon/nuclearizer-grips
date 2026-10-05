@@ -647,6 +647,19 @@ void MReadOutAssembly::StreamEvta(ostream& S)
     }
   }
 
+  //AWL: added for debug
+  for (unsigned int h = 0; h < m_StripHits.size(); ++h) {
+    /*
+    if (WithNearestNeighbors == false && m_StripHits[h]->IsNearestNeighbor() == true) {
+      continue;
+    }
+    */
+    //m_StripHits[h]->StreamRoa(S, WithADCs, WithTACs, WithEnergies, WithTimings, WithFlags, WithOrigins);
+    S << "CC ";
+    m_StripHits[h]->StreamRoa(S, true, true, true, true, false, false);
+    //++Counter;
+  }
+
   S<<"CC NStripHits "<<m_StripHits.size()<<endl;
 
   StreamBDFlags(S);

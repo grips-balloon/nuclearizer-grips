@@ -574,6 +574,9 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
   // Here: Just read it.
 
   bool IsZeroDataBug = false;
+  static std::unordered_map<uint16_t,std::vector<MStripHit*>> EventBuilderMap;
+  static std::deque<uint16_t> EventBuilderDeque;
+  const int EventBuilderMaxSize = 256;
 
   unsigned int NStripHits = 1;
   unsigned int StripHitIndex = 0;
@@ -734,8 +737,9 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
         TimeCode = HitEvent.m_GSETimeCode;
         NumberOfHits = HitEvent.m_Hits;
       } else if (m_HDFStripHitVersion <= MHDFStripHitVersion::V2_2) {
+	//AWL reaching this point 261001
         MHDFEvent_V2_2& HitEvent = m_EventData_2_2[m_CurrentBatchIndex];
-        EventID = HitEvent.m_EventID;
+        EventID = HitEvent.m_EventID; //AWL this is the uint16_t event ID that we want for event building
         TimeCode = HitEvent.m_GSETimeCode;
         NumberOfHits = HitEvent.m_Hits;
       } else {
@@ -769,6 +773,7 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
           H->IsLowVoltageStrip(m_StripMap.IsLowVoltage(Hit.m_StripID));
           H->SetADCUnits(Hit.m_EnergyData);
           H->SetTAC(Hit.m_TimingData);
+	  //H->SetTAC(EventID); //AWL useful for checking EventID
 
           // Set boolean flags based on HitType and TimingType
           H->IsGuardRing(Hit.m_HitType == 2);
@@ -788,8 +793,21 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
             StripHitIndex++;
             continue;
           }
-            
-          Event->AddStripHit(H);
+
+
+	  //AWL add strip hit to event builder cache
+	  if(EventBuilderMap.count(EventID))
+	  {
+	     EventBuilderMap[EventID].push_back(H);
+	  }
+	  else
+	  {
+	     EventBuilderMap[EventID];
+	     EventBuilderMap[EventID].push_back(H);
+	     EventBuilderDeque.push_back(EventID);
+	  }
+
+          //Event->AddStripHit(H); //AWL don't add current strip hit to the current event since it is now managed by the event builder cache.
         } else {
           if (g_Verbosity >= c_Error) cout<<m_XmlTag<<": Read-out ID "<<Hit.m_StripID<<" not found in strip map"<<endl;
           return false;
@@ -834,9 +852,21 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
   m_NEventsInFile++;
   m_NGoodEventsInFile++;
 
+  //AWL check if event is ready in the event builder cache
+  if(EventBuilderDeque.size() >= EventBuilderMaxSize)
+  {
+	  uint16_t EID = EventBuilderDeque[0];
+	  EventBuilderDeque.pop_front();
+	  auto EventBuilderHits = EventBuilderMap[EID];
+	  for(const auto HH : EventBuilderHits)
+	  {
+		  Event->AddStripHit(HH);
+	  }
+	  EventBuilderMap.erase(EID);
+  }
+
   return true;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 
