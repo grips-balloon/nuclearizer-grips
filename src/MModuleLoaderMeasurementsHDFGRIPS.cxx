@@ -773,7 +773,7 @@ bool MModuleLoaderMeasurementsHDFGRIPS::AnalyzeEvent(MReadOutAssembly* Event)
           H->IsLowVoltageStrip(m_StripMap.IsLowVoltage(Hit.m_StripID));
           H->SetADCUnits(Hit.m_EnergyData);
           H->SetTAC(Hit.m_TimingData);
-	  //H->SetTAC(EventID); //AWL useful for checking EventID
+	  //H->SetTAC(EventID); //AWL useful for checking EventID 
 
           // Set boolean flags based on HitType and TimingType
           H->IsGuardRing(Hit.m_HitType == 2);
